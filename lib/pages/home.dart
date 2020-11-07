@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import './placeholder.dart';
+
+import './productivity_stats.dart';
+import './sessions.dart';
+import './settings.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,16 +11,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  final List<String> _children_title = [
-    "Labels",
+  final List<String> _childrenTitle = [
+    "Sessions",
     "Productivity Stats",
     "Settings",
   ];
 
   final List<Widget> _children = [
-    PlaceholderWidget(Colors.white),
-    PlaceholderWidget(Colors.deepOrange),
-    PlaceholderWidget(Colors.green)
+    Sessions(),
+    ProductivityStats(),
+    Settings(),
   ];
 
   void onTabTapped(int index) {
@@ -31,20 +34,25 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _children_title[_currentIndex],
+          _childrenTitle[_currentIndex],
           style: TextStyle(color: Colors.black87),
         ),
         backgroundColor: Colors.white,
+        elevation: 0.0,
       ),
-      body: _children[_currentIndex],
+      body: Container(
+        color: Colors.white,
+        child: _children[_currentIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0.0,
         onTap: onTabTapped,
         currentIndex:
             _currentIndex, // this will be set when a new tab is tapped
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.label),
-            label: 'Labels',
+            label: 'Sessions',
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.insights),
