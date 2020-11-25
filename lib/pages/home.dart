@@ -1,3 +1,4 @@
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 import './productivity_stats.dart';
@@ -9,60 +10,76 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  TabController _controller;
+  int _index;
+
   final List<String> _childrenTitle = [
-    "Sessions",
     "Productivity Stats",
+    "Labels",
     "Settings",
   ];
 
-  final List<Widget> _children = [
-    Sessions(),
-    ProductivityStats(),
-    Settings(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _controller = new TabController(length: 3, vsync: this);
+    _index = 0;
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
+    _controller.addListener(() {
+      setState((){
+        _index = _controller.index;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _childrenTitle[_currentIndex],
-          style: TextStyle(color: Colors.black87),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _childrenTitle[_index],
+            style: TextStyle(
+              color: Colors.black87,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0.0,
         ),
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-      ),
-      body: Container(
-        color: Colors.white,
-        child: _children[_currentIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0.0,
-        onTap: onTabTapped,
-        currentIndex:
-            _currentIndex, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.label),
-            label: 'Sessions',
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.insights),
-            label: 'Productivity Stats',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          )
-        ],
+        body: TabBarView(
+          controller: _controller,
+          children: [
+            ProductivityStats(),
+            Sessions(),
+            Settings(),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _index,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          onTap: (int _index) {
+            setState(() {
+              this._index = _index;
+              this._controller.index = _index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(FeatherIcons.activity),
+              label: "Productivity Status",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FeatherIcons.tag),
+              label: "Labels",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FeatherIcons.settings),
+              label: "Settings",
+            ),
+          ],
+        )
       ),
     );
   }
