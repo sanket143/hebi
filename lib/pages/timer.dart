@@ -28,8 +28,8 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   String toTimerString(int seconds){
-    int minutes = (_start ~/ 60).toInt();
-    int seconds = _start % 60;
+    String minutes = (_start ~/ 60).toString().padLeft(2, '0');
+    String seconds = (_start % 60).toString().padLeft(2, '0');
 
     return "$minutes:$seconds";
   }
