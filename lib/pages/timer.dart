@@ -27,6 +27,13 @@ class _TimerPageState extends State<TimerPage> {
     );
   }
 
+  String toTimerString(int seconds){
+    int minutes = (_start ~/ 60).toInt();
+    int seconds = _start % 60;
+
+    return "$minutes:$seconds";
+  }
+
   @override
   void dispose() {
     _timer.cancel();
@@ -47,7 +54,7 @@ class _TimerPageState extends State<TimerPage> {
                 },
                 child: Text("start"),
               ),
-              Text("${(_start - _start % 60) / 60}:${_start % 60}"),
+              Text(toTimerString(_start)),
             ],
           ),
         ),
