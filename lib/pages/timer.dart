@@ -11,20 +11,24 @@ class _TimerPageState extends State<TimerPage> {
   Timer _timer;
   int _start = 1500;
 
-  void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) => setState(
-        () {
-          if (_start < 1) {
-            timer.cancel();
-          } else {
-            _start = _start - 1;
-          }
-        },
-      ),
-    );
+  void toggleTimer() {
+    if(_timer?.isActive ?? false){
+      _timer.cancel();
+    } else { 
+      const oneSec = const Duration(seconds: 1);
+      _timer = new Timer.periodic(
+        oneSec,
+        (Timer timer) => setState(
+          () {
+            if (_start < 1) {
+              timer.cancel();
+            } else {
+              _start = _start - 1;
+            }
+          },
+        ),
+      );
+    }
   }
 
   String toTimerString(int seconds){
@@ -48,13 +52,18 @@ class _TimerPageState extends State<TimerPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              RaisedButton(
-                onPressed: () {
-                  startTimer();
+              GestureDetector(
+                onTap: (){
+                  toggleTimer();
                 },
-                child: Text("start"),
+                child: Text(
+                  toTimerString(_start),
+                  style: TextStyle(
+                    fontSize: 100,
+                    color: Color(0xFF515151),
+                  )
+                )
               ),
-              Text(toTimerString(_start)),
             ],
           ),
         ),
