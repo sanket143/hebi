@@ -9,10 +9,14 @@ class Sessions extends StatelessWidget {
       child: Center(
         child: ElevatedButton(
           child: Text("Timer"),
-          onPressed: (){
+          onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => TimerPage()),
+              MaterialPageRoute(
+                builder: (context) => TimerPage(
+                  session: 1800,
+                ),
+              ),
             );
           },
         ),

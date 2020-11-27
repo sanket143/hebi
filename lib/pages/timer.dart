@@ -3,13 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class TimerPage extends StatefulWidget {
+  final int session;
+  
+  const TimerPage({Key key, this.session }): super(key: key);
+
   @override
   _TimerPageState createState() => _TimerPageState();
 }
 
 class _TimerPageState extends State<TimerPage> {
   Timer _timer;
-  int _start = 1500;
+  int _session;
 
   void toggleTimer() {
     if(_timer?.isActive ?? false){
@@ -20,10 +24,10 @@ class _TimerPageState extends State<TimerPage> {
         oneSec,
         (Timer timer) => setState(
           () {
-            if (_start < 1) {
+            if (_session < 1) {
               timer.cancel();
             } else {
-              _start = _start - 1;
+              _session = _session - 1;
             }
           },
         ),
@@ -32,10 +36,16 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   String toTimerString(int seconds){
-    String minutes = (_start ~/ 60).toString().padLeft(2, '0');
-    String seconds = (_start % 60).toString().padLeft(2, '0');
+    String minutes = (_session ~/ 60).toString().padLeft(2, '0');
+    String seconds = (_session % 60).toString().padLeft(2, '0');
 
     return "$minutes:$seconds";
+  }
+
+  @override
+  void initState() {
+    _session = widget.session;
+    super.initState();
   }
 
   @override
@@ -57,7 +67,7 @@ class _TimerPageState extends State<TimerPage> {
                   toggleTimer();
                 },
                 child: Text(
-                  toTimerString(_start),
+                  toTimerString(_session),
                   style: TextStyle(
                     fontSize: 100,
                     color: Color(0xFF515151),
