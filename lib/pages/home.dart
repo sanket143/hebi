@@ -27,7 +27,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _index = 1;
 
     _controller.addListener(() {
-      setState((){
+      setState(() {
         _index = _controller.index;
       });
     });
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           controller: _controller,
           children: [
             ProductivityStats(),
-            Sessions(),
+            Labels(),
             Settings(),
           ],
         ),
@@ -79,7 +79,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               label: "Settings",
             ),
           ],
-        )
+        ),
       ),
     );
   }
