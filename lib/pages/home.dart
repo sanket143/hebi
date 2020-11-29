@@ -2,7 +2,7 @@ import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 import './productivity_stats.dart';
-import './sessions.dart';
+import './labels.dart';
 import './settings.dart';
 
 class Home extends StatefulWidget {
