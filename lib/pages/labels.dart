@@ -29,33 +29,78 @@ class Label extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TimerPage(
-                session: time,
-              ),
-            ),
-          );
-        },
-        child: Container(
-          color: Color(0xFFEEEEEE),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 20.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
+      child: Container(
+        color: Color(0xFFEEEEEE),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
                   child: Text(
                     labelName,
                     style: TextStyle(fontSize: 18.0),
                   ),
                 ),
-                Icon(FeatherIcons.moreVertical)
-              ],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TimerPage(
+                        session: time,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+            GestureDetector(
+              child: Container(
+                child: Icon(FeatherIcons.moreVertical),
+                width: 50.0,
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  child: SimpleDialog(
+                    title: Text(labelName),
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          print("Edit");
+                        },
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Icon(FeatherIcons.edit2),
+                            ),
+                            Expanded(
+                              child: Text("Edit"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          print("Delete");
+                        },
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Icon(FeatherIcons.delete),
+                            ),
+                            Text("Delete"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

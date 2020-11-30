@@ -65,14 +65,17 @@ class _TimerPageState extends State<TimerPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
-                  onTap: () {
-                    toggleTimer();
-                  },
-                  child: Text(toTimerString(_session),
-                      style: TextStyle(
-                        fontSize: 100,
-                        color: Color(0xFF515151),
-                      ))),
+                onTap: () {
+                  toggleTimer();
+                },
+                child: Text(
+                  toTimerString(_session),
+                  style: TextStyle(
+                    fontSize: 100,
+                    color: Color(0xFF515151),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
