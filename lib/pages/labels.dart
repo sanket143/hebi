@@ -1,5 +1,6 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'timer.dart';
 
@@ -55,7 +56,7 @@ class _LabelsState extends State<Labels> {
   }
 }
 
-class Label extends StatelessWidget{
+class Label extends StatelessWidget {
   final int index;
   final String labelName;
   final int time;
@@ -75,7 +76,7 @@ class Label extends StatelessWidget{
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
       child: Container(
-        color: Color(0xFFFAFAFA),
+        color: this.editMode ? Color(0xFFF3F3F3) : Color(0xFFFAFAFA),
         child: Column(
           children: [
             Row(
@@ -86,7 +87,10 @@ class Label extends StatelessWidget{
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
                         this.labelName,
-                        style: TextStyle(fontSize: 18.0),
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          ),
                       ),
                     ),
                     onTap: () {
@@ -103,7 +107,7 @@ class Label extends StatelessWidget{
                 ),
                 GestureDetector(
                   child: Container(
-                    child: Icon(FeatherIcons.moreVertical),
+                    child: this.editMode ? Icon(FeatherIcons.chevronUp) : Icon(FeatherIcons.chevronDown),
                     width: 50.0,
                   ),
                   onTap: () {
@@ -122,19 +126,106 @@ class Label extends StatelessWidget{
 
 class LabelEdit extends StatelessWidget {
   final bool show;
-  final double _bodyHeight = 100;
+  final double _bodyHeight = 200;
 
   LabelEdit(this.show);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: AnimatedContainer(
-        child: Text("Description"),
-        curve: Curves.easeInOut,
-        duration: const Duration(milliseconds: 200),
-        height: show ? _bodyHeight : 0.0,
-      ),
+    return AnimatedContainer(
+      child: Container(
+          padding: EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 0.0),
+          child: ListView(
+            children: [
+              TextField(
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(FeatherIcons.tag, size: 20.0),
+                  border: InputBorder.none,
+                  hintText: "Label Name",
+                ),
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(FeatherIcons.clock, size: 20.0),
+                        border: InputBorder.none,
+                        hintText: "Minutes",
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: FlatButton(
+                      color: Colors.white,
+                      onPressed: () {
+                        print("Delete");
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FeatherIcons.trash,
+                            size: 20.0,
+                            color: Color(0xFFDC143C),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Delete",
+                            style: TextStyle(
+                              color: Color(0xFFDC143C),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: FlatButton(
+                      color: Colors.white,
+                      onPressed: () {
+                        print("Delete");
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FeatherIcons.check,
+                            size: 20.0,
+                            color: Colors.teal,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Save",
+                            style: TextStyle(
+                              color: Colors.teal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )),
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 200),
+      height: show ? _bodyHeight : 0.0,
     );
   }
 }
