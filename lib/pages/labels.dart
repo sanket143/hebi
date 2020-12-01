@@ -89,8 +89,8 @@ class Label extends StatelessWidget {
                         this.labelName,
                         style: TextStyle(
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          ),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -107,7 +107,7 @@ class Label extends StatelessWidget {
                 ),
                 GestureDetector(
                   child: Container(
-                    child: Icon(FeatherIcons.moreVertical),
+                    child: this.editMode ? Icon(FeatherIcons.chevronUp) : Icon(FeatherIcons.moreVertical),
                     width: 50.0,
                   ),
                   onTap: () {
@@ -126,106 +126,109 @@ class Label extends StatelessWidget {
 
 class LabelEdit extends StatelessWidget {
   final bool show;
-  final double _bodyHeight = 200;
+  final double _bodyHeight = 170;
 
   LabelEdit(this.show);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 300),
+      height: show ? _bodyHeight : 0.0,
       child: Container(
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 0.0),
-          child: ListView(
-            children: [
-              TextField(
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(FeatherIcons.tag, size: 20.0),
-                  border: InputBorder.none,
-                  hintText: "Label Name",
-                ),
+        padding: EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 0.0),
+        child: ListView(
+          children: [
+            TextField(
+              cursorColor: Colors.teal,
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                prefixIcon: Icon(FeatherIcons.tag, size: 20.0),
+                border: InputBorder.none,
+                hintText: "Label Name",
               ),
-              Row(
-                children: [
-                  Flexible(
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(FeatherIcons.clock, size: 20.0),
-                        border: InputBorder.none,
-                        hintText: "Minutes",
-                      ),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: TextField(
+                    cursorColor: Colors.teal,
+                    textAlignVertical: TextAlignVertical.center,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(FeatherIcons.clock, size: 20.0),
+                      border: InputBorder.none,
+                      hintText: "Minutes",
                     ),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: FlatButton(
-                      color: Colors.white,
-                      onPressed: () {
-                        print("Delete");
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FeatherIcons.trash,
-                            size: 20.0,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: FlatButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      print("Delete");
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FeatherIcons.trash,
+                          size: 20.0,
+                          color: Color(0xFFDC143C),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "Delete",
+                          style: TextStyle(
                             color: Color(0xFFDC143C),
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Delete",
-                            style: TextStyle(
-                              color: Color(0xFFDC143C),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: FlatButton(
-                      color: Colors.white,
-                      onPressed: () {
-                        print("Delete");
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FeatherIcons.check,
-                            size: 20.0,
+                ),
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: FlatButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      print("Delete");
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FeatherIcons.check,
+                          size: 20.0,
+                          color: Colors.teal,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "Save",
+                          style: TextStyle(
                             color: Colors.teal,
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Save",
-                            style: TextStyle(
-                              color: Colors.teal,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ],
-          )),
-      curve: Curves.easeInOut,
-      duration: const Duration(milliseconds: 200),
-      height: show ? _bodyHeight : 0.0,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
