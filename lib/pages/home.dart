@@ -36,12 +36,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.teal
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text(
             _childrenTitle[_index],
             style: TextStyle(
-              color: Colors.black87,
+              color: Colors.teal,
+              fontWeight: FontWeight.bold,
             ),
           ),
           backgroundColor: Colors.white,

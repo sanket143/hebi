@@ -3,105 +3,147 @@ import 'package:flutter/material.dart';
 
 import 'timer.dart';
 
-class Labels extends StatelessWidget {
+class Labels extends StatefulWidget {
+  @override
+  _LabelsState createState() => _LabelsState();
+}
+
+class _LabelsState extends State<Labels> {
+  final List _labels = [
+    {
+      "labelName": "Work",
+      "time": 1800,
+    },
+    {
+      "labelName": "Short Break",
+      "time": 1900,
+    },
+    {
+      "labelName": "Long Break",
+      "time": 2100,
+    },
+  ];
+  int _current_edit = -1;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: ListView(
-        children: <Widget>[
-          Label("Work", 1800),
-          Label("Short Break", 1900),
-          Label("Long Break", 2100),
-        ],
+        children: _labels
+            .asMap()
+            .map(
+              (idx, item) => MapEntry(
+                idx,
+                Label(
+                  idx,
+                  labelName: item["labelName"],
+                  time: item["time"],
+                  editMode: _current_edit == idx,
+                  onToggleEdit: (index) {
+                    setState(() {
+                      this._current_edit = _current_edit == idx ? -1 : idx;
+                    });
+                  },
+                ),
+              ),
+            )
+            .values
+            .toList(),
       ),
     );
   }
 }
 
-class Label extends StatelessWidget {
+class Label extends StatefulWidget {
+  final int index;
   final String labelName;
   final int time;
+  final bool editMode;
+  final void Function(int) onToggleEdit;
 
-  Label(this.labelName, this.time);
+  Label(
+    this.index, {
+    this.labelName,
+    this.time,
+    this.editMode,
+    this.onToggleEdit,
+  });
+
+  @override
+  _LabelState createState() => _LabelState();
+}
+
+class _LabelState extends State<Label> {
+  double _bodyHeight = 0;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
       child: Container(
-        color: Color(0xFFEEEEEE),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    labelName,
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TimerPage(
-                        session: time,
+        color: Color(0xFFFAFAFA),
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        widget.labelName,
+                        style: TextStyle(fontSize: 18.0),
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            GestureDetector(
-              child: Container(
-                child: Icon(FeatherIcons.moreVertical),
-                width: 50.0,
-              ),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  child: SimpleDialog(
-                    title: Text(labelName),
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          print("Edit");
-                        },
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Icon(FeatherIcons.edit2),
-                            ),
-                            Expanded(
-                              child: Text("Edit"),
-                            ),
-                          ],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TimerPage(
+                            session: widget.time,
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print("Delete");
-                        },
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Icon(FeatherIcons.delete),
-                            ),
-                            Text("Delete"),
-                          ],
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+                GestureDetector(
+                  child: Container(
+                    child: Icon(FeatherIcons.moreVertical),
+                    width: 50.0,
+                  ),
+                  onTap: () {
+                    widget.onToggleEdit(widget.index);
+                    setState(() {
+                      this._bodyHeight = this._bodyHeight == 100.0 ? 0.0 : 100.0;
+                    });
+                  },
+                ),
+              ],
             ),
+            LabelEdit(widget.editMode)
           ],
         ),
+      ),
+    );
+  }
+}
+
+class LabelEdit extends StatelessWidget {
+  final bool show;
+  final double _bodyHeight = 100;
+
+  LabelEdit(this.show);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: AnimatedContainer(
+        child: Text("Description"),
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 200),
+        height: show ? _bodyHeight : 0.0,
       ),
     );
   }
