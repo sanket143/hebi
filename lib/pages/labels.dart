@@ -30,8 +30,8 @@ class _LabelsState extends State<Labels> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: ListView(
-        children: _labels
+      child: ListView(children: [
+        ..._labels
             .asMap()
             .map(
               (idx, item) => MapEntry(
@@ -51,7 +51,26 @@ class _LabelsState extends State<Labels> {
             )
             .values
             .toList(),
-      ),
+        Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(15.0),
+              child: FlatButton(
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    Icon(
+                      FeatherIcons.plus,
+                      size: 18.0,
+                    ),
+                    Text("Add Label")
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
+      ]),
     );
   }
 }
@@ -153,7 +172,8 @@ class _LabelEditState extends State<LabelEdit> {
   @override
   void initState() {
     _labelController = new TextEditingController(text: widget.label);
-    _timeController = new TextEditingController(text: (widget.time ~/ 60).toString());
+    _timeController =
+        new TextEditingController(text: (widget.time ~/ 60).toString());
     super.initState();
   }
 
