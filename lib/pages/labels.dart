@@ -107,7 +107,7 @@ class Label extends StatelessWidget {
                 ),
                 GestureDetector(
                   child: Container(
-                    child: this.editMode ? Icon(FeatherIcons.chevronUp) : Icon(FeatherIcons.chevronDown),
+                    child: Icon(FeatherIcons.moreVertical),
                     width: 50.0,
                   ),
                   onTap: () {
