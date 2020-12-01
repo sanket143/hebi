@@ -23,7 +23,7 @@ class _LabelsState extends State<Labels> {
       "time": 2100,
     },
   ];
-  int _current_edit = -1;
+  int _currentEdit = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,10 @@ class _LabelsState extends State<Labels> {
                   idx,
                   labelName: item["labelName"],
                   time: item["time"],
-                  editMode: _current_edit == idx,
+                  editMode: _currentEdit == idx,
                   onToggleEdit: (index) {
                     setState(() {
-                      this._current_edit = _current_edit == idx ? -1 : idx;
+                      this._currentEdit = _currentEdit == idx ? -1 : idx;
                     });
                   },
                 ),
@@ -55,7 +55,7 @@ class _LabelsState extends State<Labels> {
   }
 }
 
-class Label extends StatefulWidget {
+class Label extends StatelessWidget{
   final int index;
   final String labelName;
   final int time;
@@ -69,13 +69,6 @@ class Label extends StatefulWidget {
     this.editMode,
     this.onToggleEdit,
   });
-
-  @override
-  _LabelState createState() => _LabelState();
-}
-
-class _LabelState extends State<Label> {
-  double _bodyHeight = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +85,7 @@ class _LabelState extends State<Label> {
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
-                        widget.labelName,
+                        this.labelName,
                         style: TextStyle(fontSize: 18.0),
                       ),
                     ),
@@ -101,7 +94,7 @@ class _LabelState extends State<Label> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TimerPage(
-                            session: widget.time,
+                            session: this.time,
                           ),
                         ),
                       );
@@ -114,15 +107,12 @@ class _LabelState extends State<Label> {
                     width: 50.0,
                   ),
                   onTap: () {
-                    widget.onToggleEdit(widget.index);
-                    setState(() {
-                      this._bodyHeight = this._bodyHeight == 100.0 ? 0.0 : 100.0;
-                    });
+                    this.onToggleEdit(this.index);
                   },
                 ),
               ],
             ),
-            LabelEdit(widget.editMode)
+            LabelEdit(this.editMode)
           ],
         ),
       ),
