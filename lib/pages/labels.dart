@@ -1,8 +1,10 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sembast/sembast.dart';
 
 import 'timer.dart';
+import 'const.dart';
 
 class Labels extends StatefulWidget {
   @override
@@ -24,53 +26,80 @@ class _LabelsState extends State<Labels> {
       "time": 600,
     },
   ];
+
   int _currentEdit = -1;
+  StoreRef store = StoreRef.main();
+
+  Future add() async {
+    Database db = await Hebi.getDatabase();
+
+    await store.record("labels").put(db, _labels);
+  }
+
+  Future read() async {
+    Database db = await Hebi.getDatabase();
+
+    var labels = await store.record("labels").get(db) as List;
+    print(labels);
+  }
+
+  Future check() async {
+    await Hebi.getDatabase();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: ListView(children: [
-        ..._labels
-            .asMap()
-            .map(
-              (idx, item) => MapEntry(
-                idx,
-                Label(
+      child: ListView(
+        children: [
+          ..._labels
+              .asMap()
+              .map(
+                (idx, item) => MapEntry(
                   idx,
-                  labelName: item["labelName"],
-                  time: item["time"],
-                  editMode: _currentEdit == idx,
-                  onToggleEdit: (index) {
+                  Label(
+                    idx,
+                    labelName: item["labelName"],
+                    time: item["time"],
+                    editMode: _currentEdit == idx,
+                    onToggleEdit: (index) {
+                      setState(() {
+                        this._currentEdit = _currentEdit == idx ? -1 : idx;
+                      });
+                    },
+                  ),
+                ),
+              )
+              .values
+              .toList(),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(15.0),
+                child: FlatButton(
+                  onPressed: () {
                     setState(() {
-                      this._currentEdit = _currentEdit == idx ? -1 : idx;
+                      _labels.add({"labelName": "New Label", "time": 1520});
+
+                      _currentEdit = _labels.length - 1;
                     });
                   },
+                  child: Row(
+                    children: [
+                      Icon(
+                        FeatherIcons.plus,
+                        size: 18.0,
+                      ),
+                      Text("Add Label")
+                    ],
+                  ),
                 ),
               ),
-            )
-            .values
-            .toList(),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15.0),
-              child: FlatButton(
-                onPressed: () {},
-                child: Row(
-                  children: [
-                    Icon(
-                      FeatherIcons.plus,
-                      size: 18.0,
-                    ),
-                    Text("Add Label")
-                  ],
-                ),
-              ),
-            ),
-          ],
-        )
-      ]),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

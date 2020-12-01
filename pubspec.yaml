@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  sembast: ^2.4.8
+  path_provider: ^1.6.24
   feather_icons_flutter: ">=4.7.4"
 
   # The following adds the Cupertino Icons font to your application.
