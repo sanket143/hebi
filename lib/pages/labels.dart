@@ -12,7 +12,7 @@ class Labels extends StatefulWidget {
 }
 
 class _LabelsState extends State<Labels> {
-  final List _labels = [
+  List _labels = [
     {
       "labelName": "Work",
       "time": 1800,
@@ -28,9 +28,15 @@ class _LabelsState extends State<Labels> {
   ];
 
   int _currentEdit = -1;
+  bool _loading = true;
   StoreRef store = StoreRef.main();
 
-  Future add() async {
+  void initState() {
+    this.read();
+    super.initState();
+  }
+
+  Future save() async {
     Database db = await Hebi.getDatabase();
 
     await store.record("labels").put(db, _labels);
@@ -39,8 +45,15 @@ class _LabelsState extends State<Labels> {
   Future read() async {
     Database db = await Hebi.getDatabase();
 
-    var labels = await store.record("labels").get(db) as List;
-    print(labels);
+    List labels = await store.record("labels").get(db) as List;
+
+    setState(() {
+      if (labels != null) {
+        this._labels = labels;
+      }
+
+      this._loading = false;
+    });
   }
 
   Future check() async {
@@ -49,6 +62,17 @@ class _LabelsState extends State<Labels> {
 
   @override
   Widget build(BuildContext context) {
+    if (this._loading) {
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+          ),
+        ),
+      );
+    }
+
     return Container(
       color: Colors.white,
       child: ListView(
@@ -65,8 +89,11 @@ class _LabelsState extends State<Labels> {
                     editMode: _currentEdit == idx,
                     onToggleEdit: (index) {
                       setState(() {
-                        this._currentEdit = _currentEdit == idx ? -1 : idx;
+                        this._currentEdit = _currentEdit == index ? -1 : index;
                       });
+                    },
+                    onSave: () async {
+                      await save();
                     },
                   ),
                 ),
@@ -110,6 +137,7 @@ class Label extends StatelessWidget {
   final int time;
   final bool editMode;
   final void Function(int) onToggleEdit;
+  final void Function() onSave;
 
   Label(
     this.index, {
@@ -117,6 +145,7 @@ class Label extends StatelessWidget {
     this.time,
     this.editMode,
     this.onToggleEdit,
+    this.onSave,
   });
 
   @override
