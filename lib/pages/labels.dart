@@ -17,11 +17,11 @@ class _LabelsState extends State<Labels> {
     },
     {
       "labelName": "Short Break",
-      "time": 1900,
+      "time": 300,
     },
     {
       "labelName": "Long Break",
-      "time": 2100,
+      "time": 600,
     },
   ];
   int _currentEdit = -1;
@@ -107,7 +107,9 @@ class Label extends StatelessWidget {
                 ),
                 GestureDetector(
                   child: Container(
-                    child: this.editMode ? Icon(FeatherIcons.chevronUp) : Icon(FeatherIcons.moreVertical),
+                    child: this.editMode
+                        ? Icon(FeatherIcons.chevronUp)
+                        : Icon(FeatherIcons.moreVertical),
                     width: 50.0,
                   ),
                   onTap: () {
@@ -116,7 +118,11 @@ class Label extends StatelessWidget {
                 ),
               ],
             ),
-            LabelEdit(this.editMode)
+            LabelEdit(
+              this.editMode,
+              label: this.labelName,
+              time: this.time,
+            ),
           ],
         ),
       ),
@@ -124,52 +130,70 @@ class Label extends StatelessWidget {
   }
 }
 
-class LabelEdit extends StatelessWidget {
+class LabelEdit extends StatefulWidget {
   final bool show;
-  final double _bodyHeight = 170;
+  final String label;
+  final int time;
 
-  LabelEdit(this.show);
+  LabelEdit(
+    this.show, {
+    this.label,
+    this.time,
+  });
+
+  @override
+  _LabelEditState createState() => _LabelEditState();
+}
+
+class _LabelEditState extends State<LabelEdit> {
+  final double _bodyHeight = 170;
+  TextEditingController _labelController;
+  TextEditingController _timeController;
+
+  @override
+  void initState() {
+    _labelController = new TextEditingController(text: widget.label);
+    _timeController = new TextEditingController(text: (widget.time ~/ 60).toString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       curve: Curves.easeInOut,
       duration: const Duration(milliseconds: 300),
-      height: show ? _bodyHeight : 0.0,
+      height: widget.show ? _bodyHeight : 0.0,
       child: Container(
         padding: EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 0.0),
         child: ListView(
           children: [
             TextField(
+              controller: _labelController,
               cursorColor: Colors.teal,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                 prefixIcon: Icon(FeatherIcons.tag, size: 20.0),
                 border: InputBorder.none,
+                filled: true,
                 hintText: "Label Name",
+              ),
+            ),
+            TextField(
+              controller: _timeController,
+              cursorColor: Colors.teal,
+              textAlignVertical: TextAlignVertical.center,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                filled: true,
+                prefixIcon: Icon(FeatherIcons.clock, size: 20.0),
+                border: InputBorder.none,
+                hintText: "Minutes",
               ),
             ),
             Row(
               children: [
-                Flexible(
-                  child: TextField(
-                    cursorColor: Colors.teal,
-                    textAlignVertical: TextAlignVertical.center,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(FeatherIcons.clock, size: 20.0),
-                      border: InputBorder.none,
-                      hintText: "Minutes",
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
                 Container(
-                  padding: EdgeInsets.all(10.0),
                   child: FlatButton(
                     color: Colors.white,
                     onPressed: () {
