@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+import 'package:hebi/pages/models.dart';
 
 class AboutPage extends StatelessWidget {
-  List<String> items = [
+  final List<String> items = [
     "Version",
     "Source Code",
     "App Intro",
@@ -11,7 +12,7 @@ class AboutPage extends StatelessWidget {
     "Rate this app"
   ];
 
-  List icons = [
+  final List icons = [
     Icon(FeatherIcons.info),
     Icon(FeatherIcons.github),
     Icon(FeatherIcons.tv),
@@ -22,39 +23,43 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "About",
+        ),
+      ),
       body: Container(
         color: Colors.white,
-        child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
-              final icon = icons[index];
-              return (
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.0, bottom: 20.0),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 21.0,
-                          height: 21.0,
-                          child: icon,
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(
-                          item,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ]
-                    ),
-                )
-              );
-            })
-      )
+        child: ListView(
+          children: [
+            Option(
+              text: "Version",
+              onTap: null,
+              leading: Icon(FeatherIcons.info),
+            ),
+            Option(
+              text: "Source Code",
+              onTap: null,
+              leading: Icon(FeatherIcons.github),
+            ),
+            Option(
+              text: "App Intro",
+              onTap: null,
+              leading: Icon(FeatherIcons.tv),
+            ),
+            Option(
+              text: "Tutorial",
+              onTap: null,
+              leading: Icon(FeatherIcons.youtube),
+            ),
+            Option(
+              text: "Rate this app",
+              onTap: null,
+              leading: Icon(FeatherIcons.star),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
