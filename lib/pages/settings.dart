@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hebi/pages/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:hebi/pages/settings/about.dart';
 
 class Settings extends StatelessWidget {

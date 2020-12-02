@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:hebi/pages/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
   final List<String> items = [
@@ -39,7 +40,12 @@ class AboutPage extends StatelessWidget {
             ),
             Option(
               text: "Source Code",
-              onTap: null,
+              onTap: () async {
+                const github = "https://github.com/sanket143/hebi";
+                if(await canLaunch(github)){
+                  await launch(github);
+                }
+              },
               leading: Icon(FeatherIcons.github),
             ),
             Option(
