@@ -207,6 +207,7 @@ class Label extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => TimerPage(
                             session: this.time,
+                            labelName: this.labelName,
                           ),
                         ),
                       );

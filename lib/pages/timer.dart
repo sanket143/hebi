@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class TimerPage extends StatefulWidget {
   final int session;
+  final String labelName;
 
-  const TimerPage({Key key, this.session}) : super(key: key);
+  const TimerPage({Key key, this.session, this.labelName}) : super(key: key);
 
   @override
   _TimerPageState createState() => _TimerPageState();
@@ -14,20 +15,29 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> {
   Timer _timer;
   int _session;
+  bool _isActive;
 
   void toggleTimer() {
-    if (_timer?.isActive ?? false) {
+    if (_isActive) {
       _timer.cancel();
+      setState(() {
+        _isActive = false;
+      });
     } else {
       const oneSec = const Duration(seconds: 1);
+      setState(() {
+        _isActive = true;
+      });
       _timer = new Timer.periodic(
         oneSec,
         (Timer timer) => setState(
           () {
             if (_session < 1) {
               timer.cancel();
+              _isActive = false;
             } else {
               _session = _session - 1;
+              _isActive = true;
             }
           },
         ),
@@ -45,6 +55,7 @@ class _TimerPageState extends State<TimerPage> {
   @override
   void initState() {
     _session = widget.session;
+    _isActive = false;
     super.initState();
   }
 
@@ -64,6 +75,23 @@ class _TimerPageState extends State<TimerPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Visibility(
+                visible: !_isActive,
+                maintainSize: true,
+                maintainState: true,
+                maintainAnimation: true,
+                child: Container(
+                  child: Text(
+                    widget.labelName,
+                    style: TextStyle(
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 13.0,
+              ),
               GestureDetector(
                 onTap: () {
                   toggleTimer();
@@ -72,10 +100,35 @@ class _TimerPageState extends State<TimerPage> {
                   toTimerString(),
                   style: TextStyle(
                     fontSize: 100,
-                    color: Color(0xFF515151),
+                    color: _timer?.isActive ?? false
+                        ? Colors.teal
+                        : Color(0xFF515151),
                   ),
                 ),
               ),
+              Visibility(
+                visible: !_isActive,
+                maintainSize: true,
+                maintainState: true,
+                maintainAnimation: true,
+                child: Container(
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.grey),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Back",
+                      style: TextStyle(
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
