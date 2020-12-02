@@ -27,7 +27,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _index = 1;
 
     _controller.addListener(() {
-      setState((){
+      setState(() {
         _index = _controller.index;
       });
     });
@@ -36,12 +36,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.teal
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text(
             _childrenTitle[_index],
             style: TextStyle(
-              color: Colors.black87,
+              color: Colors.teal,
+              fontWeight: FontWeight.bold,
             ),
           ),
           backgroundColor: Colors.white,
@@ -51,7 +55,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           controller: _controller,
           children: [
             ProductivityStats(),
-            Sessions(),
+            Labels(),
             Settings(),
           ],
         ),
@@ -79,7 +83,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               label: "Settings",
             ),
           ],
-        )
+        ),
       ),
     );
   }
