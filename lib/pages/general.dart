@@ -9,11 +9,13 @@ class GeneralPage extends StatefulWidget {
 }
 
 class _GeneralPageState extends State<GeneralPage> {
-  bool darkTheme;
+  bool notificationSound;
+  bool vibration;
 
   @override
   void initState() {
-    darkTheme = false;
+    notificationSound = false;
+    vibration = false;
     super.initState();
   }
 
@@ -32,8 +34,11 @@ class _GeneralPageState extends State<GeneralPage> {
         color: Theme.of(context).backgroundColor,
         child: ListView(
           children: [
+            SizedBox(
+              height: 10.0,
+            ),
             Container(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
               child: Row(
                 children: [
                   Expanded(
@@ -58,7 +63,49 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
-            )
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Notification Sound",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      )
+                    ),
+                  ),
+                  Switch(
+                    value: notificationSound,
+                    onChanged: (val){
+                      Hebi.setDarkMode(val);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Vibration",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      )
+                    ),
+                  ),
+                  Switch(
+                    value: notificationSound,
+                    onChanged: (val){
+                      Hebi.setDarkMode(val);
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
