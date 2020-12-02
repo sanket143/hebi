@@ -40,7 +40,7 @@ class _LabelsState extends State<Labels> {
   Future save({index, labelName, time}) async {
     Database db = await Hebi.getDatabase();
 
-    if (index != null || index != -1) {
+    if (index != null && index != -1) {
       setState(() {
         this._labels = List.from(_labels)..[index] = {
           "labelName": labelName,
