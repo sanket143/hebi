@@ -296,6 +296,7 @@ class _LabelEditState extends State<LabelEdit> {
               controller: _labelController,
               cursorColor: Colors.teal,
               textAlignVertical: TextAlignVertical.center,
+              enabled: widget.show,
               decoration: InputDecoration(
                 prefixIcon: Icon(FeatherIcons.tag, size: 20.0),
                 border: InputBorder.none,
@@ -309,6 +310,7 @@ class _LabelEditState extends State<LabelEdit> {
               textAlignVertical: TextAlignVertical.center,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
+              enabled: widget.show,
               decoration: InputDecoration(
                 filled: true,
                 prefixIcon: Icon(FeatherIcons.clock, size: 20.0),
