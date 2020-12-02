@@ -18,7 +18,7 @@ class Option extends StatelessWidget {
       child: GestureDetector(
         onTap: this.onTap,
         child: Container(
-          color: Color(0xFFFAFAFA),
+          color: Theme.of(context).highlightColor.withOpacity(0.1),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(

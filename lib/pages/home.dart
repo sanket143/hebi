@@ -1,5 +1,6 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:hebi/pages/theme.dart';
 
 import './productivity_stats.dart';
 import './labels.dart';
@@ -36,19 +37,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.teal
-      ),
+      theme: Themes.lightTheme,
+      darkTheme: Themes.darkTheme,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
             _childrenTitle[_index],
             style: TextStyle(
-              color: Colors.teal,
               fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: Colors.white,
           elevation: 0.0,
         ),
         body: TabBarView(

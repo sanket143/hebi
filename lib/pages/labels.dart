@@ -84,7 +84,7 @@ class _LabelsState extends State<Labels> {
   Widget build(BuildContext context) {
     if (this._loading) {
       return Container(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         child: Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
@@ -94,7 +94,7 @@ class _LabelsState extends State<Labels> {
     }
 
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: ListView(
         children: [
           ..._labels
@@ -184,7 +184,7 @@ class Label extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
       child: Container(
-        color: this.editMode ? Color(0xFFF3F3F3) : Color(0xFFFAFAFA),
+        color: Theme.of(context).highlightColor.withOpacity(0.1),
         child: Column(
           children: [
             Row(

@@ -101,8 +101,8 @@ class _TimerPageState extends State<TimerPage> {
                   style: TextStyle(
                     fontSize: 100,
                     color: _timer?.isActive ?? false
-                        ? Colors.teal
-                        : Color(0xFF515151),
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).primaryColorLight,
                   ),
                 ),
               ),
@@ -122,9 +122,6 @@ class _TimerPageState extends State<TimerPage> {
                     },
                     child: Text(
                       "Back",
-                      style: TextStyle(
-                        color: Colors.black54,
-                      ),
                     ),
                   ),
                 ),
