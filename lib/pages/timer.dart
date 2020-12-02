@@ -35,7 +35,7 @@ class _TimerPageState extends State<TimerPage> {
     }
   }
 
-  String toTimerString(int seconds) {
+  String toTimerString() {
     String minutes = (_session ~/ 60).toString().padLeft(2, '0');
     String seconds = (_session % 60).toString().padLeft(2, '0');
 
@@ -69,7 +69,7 @@ class _TimerPageState extends State<TimerPage> {
                   toggleTimer();
                 },
                 child: Text(
-                  toTimerString(_session),
+                  toTimerString(),
                   style: TextStyle(
                     fontSize: 100,
                     color: Color(0xFF515151),

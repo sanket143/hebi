@@ -352,7 +352,7 @@ class _LabelEditState extends State<LabelEdit> {
                     onPressed: () {
                       widget.onSave(
                         labelName: this._labelController.text,
-                        time: int.parse(this._timeController.text),
+                        time: int.parse(this._timeController.text) * 60,
                       );
                     },
                     child: Row(
