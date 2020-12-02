@@ -323,7 +323,7 @@ class _LabelEditState extends State<LabelEdit> {
               children: [
                 Container(
                   child: FlatButton(
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.95),
                     onPressed: () {
                       widget.onDelete();
                     },
@@ -351,7 +351,7 @@ class _LabelEditState extends State<LabelEdit> {
                 Container(
                   padding: EdgeInsets.all(10.0),
                   child: FlatButton(
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.95),
                     onPressed: () {
                       widget.onSave(
                         labelName: this._labelController.text,
