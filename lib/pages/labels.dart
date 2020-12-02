@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sembast/sembast.dart';
 
 import 'timer.dart';
-import 'const.dart';
+import 'conf.dart';
 
 class Labels extends StatefulWidget {
   @override

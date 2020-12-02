@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hebi/pages/widgets.dart';
-import 'package:hebi/pages/general.dart';
-import 'package:hebi/pages/about.dart';
+import 'widgets.dart';
+import 'general.dart';
+import 'about.dart';
 
 class Settings extends StatelessWidget {
   @override
