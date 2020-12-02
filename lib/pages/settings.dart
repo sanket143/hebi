@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hebi/pages/models.dart';
 import 'package:hebi/pages/settings/about.dart';
 
 class Settings extends StatelessWidget {
@@ -10,7 +11,7 @@ class Settings extends StatelessWidget {
         children: [
           Option(
             text: "General",
-            onTap: (){
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -21,7 +22,7 @@ class Settings extends StatelessWidget {
           ),
           Option(
             text: "About",
-            onTap: (){
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -32,7 +33,7 @@ class Settings extends StatelessWidget {
           ),
           Option(
             text: "Give Feedback",
-            onTap: (){
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -43,7 +44,7 @@ class Settings extends StatelessWidget {
           ),
           Option(
             text: "Report a Bug",
-            onTap: (){
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -54,7 +55,7 @@ class Settings extends StatelessWidget {
           ),
           Option(
             text: "Reset App",
-            onTap: (){
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -64,47 +65,6 @@ class Settings extends StatelessWidget {
             },
           ),
         ],
-      )
-    );
-  }
-}
-
-class Option extends StatelessWidget {
-  final String text;
-  final void Function() onTap;
-
-  Option({
-    this.text,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-      child: Container(
-        color: Color(0xFFFAFAFA),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    this.text,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  this.onTap();
-                },
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
