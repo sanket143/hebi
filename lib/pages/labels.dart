@@ -12,26 +12,27 @@ class Labels extends StatefulWidget {
 }
 
 class _LabelsState extends State<Labels> {
-  List _labels = [
-    {
-      "labelName": "Work",
-      "time": 1800,
-    },
-    {
-      "labelName": "Short Break",
-      "time": 300,
-    },
-    {
-      "labelName": "Long Break",
-      "time": 600,
-    },
-  ];
+  List _labels;
 
   int _currentEdit = -1;
   bool _loading = true;
   StoreRef store = StoreRef.main();
 
   void initState() {
+    this._labels = [
+      {
+        "labelName": "Work",
+        "time": 1800,
+      },
+      {
+        "labelName": "Short Break",
+        "time": 300,
+      },
+      {
+        "labelName": "Long Break",
+        "time": 600,
+      },
+    ];
     this.read();
     super.initState();
   }
@@ -39,7 +40,21 @@ class _LabelsState extends State<Labels> {
   Future save() async {
     Database db = await Hebi.getDatabase();
 
-    await store.record("labels").put(db, _labels);
+    await store.record("labels").put(db, this._labels);
+
+    setState(() {
+      this._currentEdit = -1;
+    });
+    print("Saved");
+  }
+
+  Future delete(int index) async {
+
+    setState(() {
+      this._labels = List.from(_labels)..removeAt(index);
+    });
+
+    await this.save();
   }
 
   Future read() async {
@@ -54,10 +69,6 @@ class _LabelsState extends State<Labels> {
 
       this._loading = false;
     });
-  }
-
-  Future check() async {
-    await Hebi.getDatabase();
   }
 
   @override
@@ -95,6 +106,9 @@ class _LabelsState extends State<Labels> {
                     onSave: () async {
                       await save();
                     },
+                    onDelete: () async {
+                      await delete(idx);
+                    },
                   ),
                 ),
               )
@@ -107,9 +121,12 @@ class _LabelsState extends State<Labels> {
                 child: FlatButton(
                   onPressed: () {
                     setState(() {
-                      _labels.add({"labelName": "New Label", "time": 1520});
+                      this._labels = [
+                        ..._labels,
+                        {"labelName": "New Label", "time": 1520},
+                      ];
 
-                      _currentEdit = _labels.length - 1;
+                      this._currentEdit = this._labels.length - 1;
                     });
                   },
                   child: Row(
@@ -124,7 +141,7 @@ class _LabelsState extends State<Labels> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -138,6 +155,7 @@ class Label extends StatelessWidget {
   final bool editMode;
   final void Function(int) onToggleEdit;
   final void Function() onSave;
+  final void Function() onDelete;
 
   Label(
     this.index, {
@@ -146,6 +164,7 @@ class Label extends StatelessWidget {
     this.editMode,
     this.onToggleEdit,
     this.onSave,
+    this.onDelete,
   });
 
   @override
@@ -199,6 +218,12 @@ class Label extends StatelessWidget {
               this.editMode,
               label: this.labelName,
               time: this.time,
+              onSave: () {
+                this.onSave();
+              },
+              onDelete: () {
+                this.onDelete();
+              },
             ),
           ],
         ),
@@ -211,11 +236,15 @@ class LabelEdit extends StatefulWidget {
   final bool show;
   final String label;
   final int time;
+  final void Function() onSave;
+  final void Function() onDelete;
 
   LabelEdit(
     this.show, {
     this.label,
     this.time,
+    this.onSave,
+    this.onDelete,
   });
 
   @override
@@ -275,7 +304,7 @@ class _LabelEditState extends State<LabelEdit> {
                   child: FlatButton(
                     color: Colors.white,
                     onPressed: () {
-                      print("Delete");
+                      widget.onDelete();
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -303,7 +332,7 @@ class _LabelEditState extends State<LabelEdit> {
                   child: FlatButton(
                     color: Colors.white,
                     onPressed: () {
-                      print("Delete");
+                      widget.onSave();
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
