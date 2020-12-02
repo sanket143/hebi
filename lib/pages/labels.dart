@@ -37,19 +37,28 @@ class _LabelsState extends State<Labels> {
     super.initState();
   }
 
-  Future save() async {
+  Future save({index, labelName, time}) async {
     Database db = await Hebi.getDatabase();
+
+    if (index != null || index != -1) {
+      setState(() {
+        this._labels = List.from(_labels)..[index] = {
+          "labelName": labelName,
+          "time": time,
+        };
+      });
+    }
 
     await store.record("labels").put(db, this._labels);
 
     setState(() {
       this._currentEdit = -1;
     });
+
     print("Saved");
   }
 
   Future delete(int index) async {
-
     setState(() {
       this._labels = List.from(_labels)..removeAt(index);
     });
@@ -103,8 +112,11 @@ class _LabelsState extends State<Labels> {
                         this._currentEdit = _currentEdit == index ? -1 : index;
                       });
                     },
-                    onSave: () async {
-                      await save();
+                    onSave: ({
+                      labelName,
+                      time,
+                    }) async {
+                      await save(index: idx, labelName: labelName, time: time);
                     },
                     onDelete: () async {
                       await delete(idx);
@@ -154,7 +166,7 @@ class Label extends StatelessWidget {
   final int time;
   final bool editMode;
   final void Function(int) onToggleEdit;
-  final void Function() onSave;
+  final void Function({String labelName, int time}) onSave;
   final void Function() onDelete;
 
   Label(
@@ -218,8 +230,14 @@ class Label extends StatelessWidget {
               this.editMode,
               label: this.labelName,
               time: this.time,
-              onSave: () {
-                this.onSave();
+              onSave: ({
+                labelName,
+                time,
+              }) {
+                this.onSave(
+                  labelName: labelName,
+                  time: time,
+                );
               },
               onDelete: () {
                 this.onDelete();
@@ -236,7 +254,7 @@ class LabelEdit extends StatefulWidget {
   final bool show;
   final String label;
   final int time;
-  final void Function() onSave;
+  final void Function({String labelName, int time}) onSave;
   final void Function() onDelete;
 
   LabelEdit(
@@ -332,7 +350,10 @@ class _LabelEditState extends State<LabelEdit> {
                   child: FlatButton(
                     color: Colors.white,
                     onPressed: () {
-                      widget.onSave();
+                      widget.onSave(
+                        labelName: this._labelController.text,
+                        time: int.parse(this._timeController.text),
+                      );
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
