@@ -44,14 +44,17 @@ class _GeneralPageState extends State<GeneralPage> {
                       )
                     ),
                   ),
-                  Switch(
-                    value: darkTheme,
-                    onChanged: (val){
-                      setState(() {
-                        this.darkTheme = val;
-                        
-                      });
-                    },
+                  StreamBuilder<bool>(
+                    initialData: Hebi.prefs.getBool("darkMode"),
+                    stream: Hebi.darkMode.stream,
+                    builder: (context, snapshot) {
+                      return Switch(
+                        value: snapshot.data,
+                        onChanged: (val){
+                          Hebi.setDarkMode(val);
+                        },
+                      );
+                    }
                   ),
                 ],
               ),

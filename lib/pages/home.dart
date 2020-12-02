@@ -26,7 +26,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.initState();
     _controller = new TabController(length: 3, vsync: this, initialIndex: 1);
     _index = 1;
-
     _controller.addListener(() {
       setState(() {
         _index = _controller.index;
@@ -36,53 +35,60 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: Themes.lightTheme,
-      darkTheme: Themes.darkTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _childrenTitle[_index],
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    return StreamBuilder<bool>(
+      initialData: Hebi.prefs.getBool("darkMode"),
+      stream: Hebi.darkMode.stream,
+      builder: (context, snapshot) {
+        return MaterialApp(
+          themeMode: snapshot.data ? ThemeMode.dark : ThemeMode.light,
+          theme: Themes.lightTheme,
+          darkTheme: Themes.darkTheme,
+          home: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                _childrenTitle[_index],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              elevation: 0.0,
+            ),
+            body: TabBarView(
+              controller: _controller,
+              children: [
+                ProductivityStats(),
+                Labels(),
+                Settings(),
+              ],
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _index,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              onTap: (int _index) {
+                setState(() {
+                  this._index = _index;
+                  this._controller.index = _index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(FeatherIcons.activity),
+                  label: "Productivity Status",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(FeatherIcons.tag),
+                  label: "Labels",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(FeatherIcons.settings),
+                  label: "Settings",
+                ),
+              ],
             ),
           ),
-          elevation: 0.0,
-        ),
-        body: TabBarView(
-          controller: _controller,
-          children: [
-            ProductivityStats(),
-            Labels(),
-            Settings(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _index,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          onTap: (int _index) {
-            setState(() {
-              this._index = _index;
-              this._controller.index = _index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.activity),
-              label: "Productivity Status",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.tag),
-              label: "Labels",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.settings),
-              label: "Settings",
-            ),
-          ],
-        ),
-      ),
+        );
+      }
     );
   }
 }

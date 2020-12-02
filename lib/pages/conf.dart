@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:path_provider/path_provider.dart';
 
 import 'package:path/path.dart';
@@ -6,9 +8,22 @@ import 'package:sembast/sembast_io.dart';
 
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Hebi {
   static const String dbPath = "hebi.db";
+  static SharedPreferences prefs;
+  static StreamController<bool> darkMode = StreamController.broadcast();
+
+  static Future init() async {
+    prefs = await SharedPreferences.getInstance();
+    darkMode.add(prefs.getBool("darkMode") ?? false);
+  }
+
+  static setDarkMode(bool value) async {
+    prefs.setBool("darkMode", value);
+    darkMode.add(value);
+  }
 
   static Future<Database> getDatabase() async {
     final directory = await getApplicationDocumentsDirectory();
