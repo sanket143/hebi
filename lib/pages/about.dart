@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
-import 'package:hebi/pages/models.dart';
-import 'package:hebi/pages/theme.dart';
+import 'package:hebi/pages/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import './conf.dart';
 
 class AboutPage extends StatelessWidget {
   final List<String> items = [
@@ -26,23 +27,9 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        textTheme: Theme.of(context).brightness == Brightness.light
-            ? TextTheme(
-              headline6: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w500
-              ),
-            )
-            : Theme.of(context).textTheme,
-        iconTheme: IconThemeData(
-          color:Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Theme.of(context).iconTheme.color,
-        ),
-        backgroundColor: Theme.of(context).brightness == Brightness.light
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).appBarTheme.color,
+        textTheme: CustomAppBarTheme.getTextTheme(context),
+        iconTheme: CustomAppBarTheme.getIconTheme(context),
+        backgroundColor: CustomAppBarTheme.getBackgroundColor(context),
         title: Text(
           "About",
         ),

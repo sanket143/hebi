@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hebi/pages/models.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:hebi/pages/settings/about.dart';
+import 'package:hebi/pages/widgets.dart';
+import 'package:hebi/pages/general.dart';
+import 'package:hebi/pages/about.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -16,7 +16,7 @@ class Settings extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AboutPage(),
+                  builder: (context) => GeneralPage(),
                 ),
               );
             },
