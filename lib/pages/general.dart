@@ -50,7 +50,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     ),
                   ),
                   StreamBuilder<bool>(
-                    initialData: Hebi.prefs.getBool("darkMode"),
+                    initialData: Hebi.prefs.getBool("darkMode") ?? false,
                     stream: Hebi.darkMode.stream,
                     builder: (context, snapshot) {
                       return Switch(

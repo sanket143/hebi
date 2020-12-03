@@ -36,7 +36,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      initialData: Hebi.prefs.getBool("darkMode"),
+      initialData: Hebi.prefs.getBool("darkMode") ?? false,
       stream: Hebi.darkMode.stream,
       builder: (context, snapshot) {
         return MaterialApp(

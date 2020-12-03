@@ -1,4 +1,4 @@
-package com.example.hebi
+package com.continuum.hebi
 
 import io.flutter.embedding.android.FlutterActivity
 
